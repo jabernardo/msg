@@ -5,6 +5,7 @@ import (
 	"strings"
 )
 
+// Message Structure
 type Message struct {
 	// Source File
 	Source 	string
@@ -14,6 +15,15 @@ type Message struct {
 	Output	string
 }
 
+// Create a new instance of Message
+//
+// Arguments:
+//  - src (string) Source file path
+//  - out (string) Output file path
+//  - msg (string) Message
+// 
+// Returns:
+//  - (*Message) New Message struct
 func New(src string, out string, msg string) *Message {
 	new_msg := &Message{}
 	new_msg.Source = src
@@ -23,6 +33,14 @@ func New(src string, out string, msg string) *Message {
 	return new_msg
 }
 
+// (*Message) GetContents - Get file contents
+//
+// Arguments:
+//  - src (string) Source file path
+//
+// Returns:
+//  - (string) File contents
+//  - (error)  Error
 func (app *Message) GetContents(src string) (string, error) {
 	data, err := ioutil.ReadFile(src)
 
@@ -33,6 +51,11 @@ func (app *Message) GetContents(src string) (string, error) {
 	return string(data), nil
 }
 
+// (*Message) Encrypt - Encrypt message
+//
+// Returns
+//  - (string) Encrypted message
+//  - (error)  Error
 func (app *Message) Encrypt() (string, error) {
 	var encrypted strings.Builder
 	source, err := app.GetContents(app.Source)
