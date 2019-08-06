@@ -11,10 +11,11 @@ func main() {
 	log.SetFlags(0)
 
 	app := Aargh.New()
-	
+
 	app.Command("default", command_help)
 	app.Command("hide", command_hide)
 
-	app.Run()
+	if err := app.Run(false); err != nil {
+		log.Fatalln(err)
+	}
 }
-
