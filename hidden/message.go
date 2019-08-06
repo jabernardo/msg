@@ -3,16 +3,18 @@ package Hidden
 import (
 	"io/ioutil"
 	"strings"
+	"unicode"
+	"unicode/utf8"
 )
 
 // Message Structure
 type Message struct {
 	// Source File
-	Source 	string
+	Source string
 	// Content
 	Content string
 	// Output File
-	Output	string
+	Output string
 }
 
 // Create a new instance of Message
@@ -21,7 +23,7 @@ type Message struct {
 //  - src (string) Source file path
 //  - out (string) Output file path
 //  - msg (string) Message
-// 
+//
 // Returns:
 //  - (*Message) New Message struct
 func New(src string, out string, msg string) *Message {
@@ -64,7 +66,7 @@ func (app *Message) Encrypt() (string, error) {
 		return "", err
 	}
 
-	last_index := 0;
+	last_index := 0
 
 	for _, char := range source {
 		if last_index < len(app.Content) {
@@ -72,9 +74,10 @@ func (app *Message) Encrypt() (string, error) {
 
 				char_content := strings.ToUpper(string(app.Content[i]))
 				char_source := strings.ToUpper(string(char))
+				char_unicode, _ := utf8.DecodeRuneInString(char_content)
 
-				if char_content == char_source {
-					encrypted.WriteString(strings.ToUpper(char_source))
+				if strings.Compare(char_content, char_source) == 0 || !unicode.IsLetter(char_unicode) {
+					encrypted.WriteString(strings.ToUpper(char_content))
 
 					last_index += 1
 					break
