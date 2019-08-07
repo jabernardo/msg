@@ -5,16 +5,15 @@ import (
 	"log"
 
 	Aargh "github.com/jabernardo/aargh"
-	Message "github.com/jabernardo/msg/hidden"
+	Hidden "github.com/jabernardo/msg/hidden"
 )
 
 func command_hide(app *Aargh.App) {
-	src := app.GetOption("src")
-	out := app.GetOption("out")
-	msg := app.GetOption("msg")
-	hid_msg := Message.New(src, out, msg)
+	var src string = app.GetOption("src", "pangram")
+	var out string = app.GetOption("out")
+	var msg string = app.GetOption("msg")
 
-	content, err := hid_msg.Encrypt()
+	content, err := Hidden.New(src, out, msg)
 
 	if err != nil {
 		log.Fatalln("[msg] Invalid source file.")
