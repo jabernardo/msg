@@ -1,7 +1,6 @@
 package Hidden
 
 import (
-	"io/ioutil"
 	"math/rand"
 	"strings"
 	"time"
@@ -27,45 +26,22 @@ type Message struct {
 	Source string
 	// Content
 	Content string
-	// Output File
-	Output string
 }
 
 // Create a new instance of Message
 //
 // Arguments:
-//  - src (string) Source file path
-//  - out (string) Output file path
+//  - src (string) Source file path (set value to `pangram` for random pangram source)
 //  - msg (string) Message
 //
 // Returns:
 //  - (string) Encrypted message
-//  - (error)  Error
-func New(src string, out string, msg string) (string, error) {
+func New(src string, msg string) string {
 	new_msg := &Message{}
 	new_msg.Source = src
-	new_msg.Output = out
 	new_msg.Content = msg
 
 	return new_msg.encrypt()
-}
-
-// (*Message).getContents - Get file contents
-//
-// Arguments:
-//  - src (string) Source file path
-//
-// Returns:
-//  - (string) File contents
-//  - (error)  Error
-func (app *Message) getContents(src string) (string, error) {
-	data, err := ioutil.ReadFile(src)
-
-	if err != nil {
-		return "", err
-	}
-
-	return string(data), nil
 }
 
 // (*Message).getRandomPangram - Generate default source
@@ -93,16 +69,13 @@ func (app *Message) getRandomPangram() string {
 //
 // Returns
 //  - (string) Encrypted message
-//  - (error)  Error
-func (app *Message) encrypt() (string, error) {
+func (app *Message) encrypt() string {
 	var encrypted strings.Builder
 
-	source, err := app.getContents(app.Source)
+	source := app.Source
 
 	if strings.Compare(app.Source, "pangram") == 0 {
 		source = app.getRandomPangram()
-	} else if err != nil {
-		return "", err
 	}
 
 	last_index := 0
@@ -130,5 +103,5 @@ func (app *Message) encrypt() (string, error) {
 		}
 	}
 
-	return encrypted.String(), nil
+	return encrypted.String()
 }
