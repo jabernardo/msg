@@ -12,6 +12,9 @@ func main() {
 
 	app := Aargh.New()
 
+	app.Name = "msg"
+	app.Version = "0.1"
+
 	app.Command("default", command_help)
 	app.Command("hide", command_hide)
 
